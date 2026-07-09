@@ -4,9 +4,9 @@ namespace Banking.Domain.Interfaces
 {
     public interface ICustomerRepository
     {
-        Task<Customer?> GetCustomerByIdAsync(Guid Id);
+        Task<Customer?> GetByIdAsync(Guid Id);
         Task<IEnumerable<Customer>> GetAllAsync();
-        Task AddCustomerAsync(Customer customer);
-        Task UpdateCustomerAsync(Customer customer);
+        Task AddAsync(Customer customer);
+        Task UpdateAsync(Customer customer);
     }
 }

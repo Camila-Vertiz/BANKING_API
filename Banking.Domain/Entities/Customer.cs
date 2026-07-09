@@ -17,6 +17,15 @@ namespace Banking.Domain.Entities
         private Customer() { }
         public Customer(DocumentTypeEnum documentType, string documentNumber, string fullName, string email, Guid? userId = null)
         {
+            if (string.IsNullOrWhiteSpace(documentNumber))
+                throw new ArgumentException("Document number is required.", nameof(documentNumber));
+
+            if (string.IsNullOrWhiteSpace(fullName))
+                throw new ArgumentException("Full name is required.", nameof(fullName));
+
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email is required.", nameof(email));
+
             Id = Guid.NewGuid();
             UserId = userId;
             DocumentType = documentType;

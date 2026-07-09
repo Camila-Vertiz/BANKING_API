@@ -1,14 +1,6 @@
 ﻿using Banking.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
-
 namespace Banking.Domain.Entities
 {
-    //Transacción de base de datos atómica
     public class Transaction
     {
         public Guid Id { get; private set; }

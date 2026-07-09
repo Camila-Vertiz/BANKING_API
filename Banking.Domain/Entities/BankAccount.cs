@@ -20,6 +20,12 @@ namespace Banking.Domain.Entities
             if (initialBalance < 0)
                 throw new InvalidOperationException("Initial balance cannot be negative.");
 
+            if (string.IsNullOrWhiteSpace(number))
+                throw new ArgumentException("Account number is required.", nameof(number));
+
+            if (customerId == Guid.Empty)
+                throw new ArgumentException("Customer id is required.", nameof(customerId));
+
             Id = Guid.NewGuid();
             Number = number;
             CustomerId = customerId;
@@ -42,7 +48,6 @@ namespace Banking.Domain.Entities
                 throw new ArgumentException("Amount must be greater than zero.", nameof(amount));
 
             Balance += amount;
-            //_transactions.Add(new Transaction(Id, amount, TransactionTypeEnum.Credit, CurrencyE "Credit Transaction"));
         }
 
         public void Debit(decimal amount)
@@ -55,7 +60,6 @@ namespace Banking.Domain.Entities
                 throw new InvalidOperationException("Insufficient funds.");
 
             Balance -= amount;
-            //_transactions.Add(new Transaction(Id, amount, TransactionTypeEnum.Debit, "Debit Transaction"));
         }
 
         public void CloseAccount()

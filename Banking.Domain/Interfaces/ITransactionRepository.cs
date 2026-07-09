@@ -4,7 +4,7 @@ namespace Banking.Domain.Interfaces
 {
     public interface ITransactionRepository
     {
-        Task AddTransactionAsync(Transaction transaction);
-        Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(Guid accountId);
+        Task AddAsync(Transaction transaction);
+        Task<IEnumerable<Transaction>> GetByAccountIdAsync(Guid accountId);
     }
 }

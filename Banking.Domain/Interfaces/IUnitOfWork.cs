@@ -2,10 +2,10 @@
 {
     public interface IUnitOfWork
     {
-        IUserRepository UserRepository { get; }
-        ICustomerRepository CustomerRepository { get; }
-        IBankAccountRepository BankAccountRepository { get; }
-        ITransactionRepository TransactionRepository { get; }
+        IUserRepository Users { get; }
+        ICustomerRepository Customers { get; }
+        IBankAccountRepository BankAccounts{ get; }
+        ITransactionRepository Transactions{ get; }
         Task<int> SaveChangesAsync();
     }
 }
