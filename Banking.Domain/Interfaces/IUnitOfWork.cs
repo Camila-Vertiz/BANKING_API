@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Banking.Domain.Interfaces
+﻿namespace Banking.Domain.Interfaces
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
+        IUserRepository UserRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
+        IBankAccountRepository BankAccountRepository { get; }
+        ITransactionRepository TransactionRepository { get; }
+        Task<int> SaveChangesAsync();
     }
 }
