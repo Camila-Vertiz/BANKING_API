@@ -17,10 +17,10 @@ namespace Banking.Infrastructure.Extensions
         {
             // Configure DbContext
             services.AddDbContext<BankingDbContext>(options =>
+            {
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")
-                )
-            );
+                    configuration.GetConnectionString("DefaultConnection"));
+            });
 
             // Register repositories
             services.AddScoped<IUserRepository, UserRepository>();
