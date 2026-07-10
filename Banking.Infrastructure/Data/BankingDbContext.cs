@@ -11,7 +11,7 @@ namespace Banking.Infrastructure.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Customer> Customers => Set<Customer>();
-        public DbSet<BankAccount> Accounts => Set<BankAccount>();
+        public DbSet<BankAccount> BankAccounts => Set<BankAccount>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

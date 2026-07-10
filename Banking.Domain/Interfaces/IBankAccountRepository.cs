@@ -4,8 +4,8 @@ namespace Banking.Domain.Interfaces
 {
     public interface IBankAccountRepository
     {
-        Task<BankAccount?> GetByIdAsync(Guid Id);
-        Task<BankAccount?> GetByNumberAsync(string Number);
+        Task<BankAccount?> GetByIdAsync(Guid id);
+        Task<BankAccount?> GetByNumberAsync(string number);
         Task AddAsync(BankAccount bankAccount);
         Task UpdateAsync(BankAccount bankAccount);
     }
