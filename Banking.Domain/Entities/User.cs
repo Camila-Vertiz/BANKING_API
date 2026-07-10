@@ -13,6 +13,10 @@ namespace Banking.Domain.Entities
         private User() { }
         public User(string userName, string passwordHash, UserRoleEnum role)
         {
+            if (string.IsNullOrWhiteSpace(userName))
+                throw new ArgumentException("UserName is required.", nameof(userName));
+
+
             Id = Guid.NewGuid();
             UserName = userName;
             PasswordHash = passwordHash;

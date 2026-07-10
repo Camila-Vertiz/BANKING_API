@@ -36,6 +36,12 @@ namespace Banking.Domain.Entities
         }
         public void UpdateBasicInfo(string fullName, string email)
         {
+            if (string.IsNullOrWhiteSpace(fullName))
+                throw new ArgumentException("Full name is required.", nameof(fullName));
+
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email is required.", nameof(email));
+
             FullName = fullName;
             Email = email;
         }
