@@ -3,6 +3,7 @@ using Banking.Application.Responses;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
+using FluentValidation;
 
 namespace Banking.Application.Services
 {
@@ -10,15 +11,16 @@ namespace Banking.Application.Services
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<CreateCustomerRequest> _createCustomerValidator;
 
-        public CustomerService
-            (
-                ICustomerRepository customerRepository,
-                IUnitOfWork unitOfWork
-            )
+        public CustomerService(
+            ICustomerRepository customerRepository,
+            IUnitOfWork unitOfWork,
+            IValidator<CreateCustomerRequest> createCustomerValidator)
         {
             _customerRepository = customerRepository;
             _unitOfWork = unitOfWork;
+            _createCustomerValidator = createCustomerValidator;
         }
 
         private static CustomerResponse MapToResponse(Customer customer)
@@ -36,6 +38,13 @@ namespace Banking.Application.Services
 
         public async Task<CustomerResponse> CreateAsync(CreateCustomerRequest request)
         {
+            var validationResult = await _createCustomerValidator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             var customer = new Customer(
                 request.DocumentType,
                 request.DocumentNumber,
@@ -61,7 +70,7 @@ namespace Banking.Application.Services
         {
             var customer = await _customerRepository.GetByIdAsync(id);
 
-            if(customer is null)
+            if (customer is null)
                 return null;
 
             return MapToResponse(customer);
@@ -81,7 +90,7 @@ namespace Banking.Application.Services
         {
             var customer = await _customerRepository.GetByIdAsync(id);
 
-            if(customer is null)
+            if (customer is null)
                 throw new KeyNotFoundException("Customer not found.");
 
             customer.UpdateBasicInfo(request.FullName, request.Email);

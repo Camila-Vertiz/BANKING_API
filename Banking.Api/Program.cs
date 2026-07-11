@@ -1,3 +1,4 @@
+using Banking.Api.Middleware;
 using Banking.Application.Extensions;
 using Banking.Infrastructure.Extensions;
 using System.Text.Json.Serialization;
@@ -32,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
 
