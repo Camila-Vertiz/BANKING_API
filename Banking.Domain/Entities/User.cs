@@ -15,7 +15,9 @@ namespace Banking.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(userName))
                 throw new ArgumentException("UserName is required.", nameof(userName));
-
+           
+            if (string.IsNullOrWhiteSpace(passwordHash))
+                throw new ArgumentException("Password hash is required.", nameof(passwordHash));
 
             Id = Guid.NewGuid();
             UserName = userName;

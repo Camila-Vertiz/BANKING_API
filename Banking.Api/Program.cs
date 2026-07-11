@@ -1,10 +1,13 @@
 using Banking.Infrastructure.Extensions;
+using Banking.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddAplication();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
