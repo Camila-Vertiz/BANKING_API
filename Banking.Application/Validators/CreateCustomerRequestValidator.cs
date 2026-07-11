@@ -28,10 +28,15 @@ namespace Banking.Application.Validators
                 .MaximumLength(200).WithMessage("Full name cannot exceed 200 characters.");
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .MaximumLength(100).WithMessage("Email cannot exceed 100 characters.")
-                .EmailAddress().WithMessage("Invalid email format.")
-                .When(x => !string.IsNullOrWhiteSpace(x.Email));
+                .NotEmpty()
+                .WithMessage("Email is required.")
+                .MaximumLength(100)
+                .WithMessage("Email cannot exceed 100 characters.");
+
+            RuleFor(x => x.Email)
+                .EmailAddress()
+                .When(x => !string.IsNullOrWhiteSpace(x.Email))
+                .WithMessage("Invalid email format.");
         }
     }
 }
