@@ -67,7 +67,7 @@ namespace Banking.Application.Services
             return MapToResponse(customer);
         }
 
-        public async Task UpdateAsync(Guid id, UpdateCustomerRequest request)
+        public async Task UpdateProfileAsync(Guid id, UpdateCustomerProfileRequest request)
         {
             var customer = await _customerRepository.GetByIdAsync(id);
 

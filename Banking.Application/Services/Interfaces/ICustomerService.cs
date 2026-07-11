@@ -11,6 +11,6 @@ namespace Banking.Application.Services.Interfaces
 
         Task<IEnumerable<CustomerResponse>> GetAllAsync();
 
-        Task UpdateAsync(Guid id, UpdateCustomerRequest request);
+        Task UpdateProfileAsync(Guid id, UpdateCustomerProfileRequest request);
     }
 }

@@ -6,7 +6,7 @@ namespace Banking.Application.Extensions
 {
     public static class ApplicationServiceCollectionExtensions
     {
-        public static IServiceCollection AddAplication(
+        public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();

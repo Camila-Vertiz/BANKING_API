@@ -1,13 +1,20 @@
-using Banking.Infrastructure.Extensions;
 using Banking.Application.Extensions;
+using Banking.Infrastructure.Extensions;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions
+            .Converters.Add(
+                new JsonStringEnumConverter());
+    });
 
-builder.Services.AddAplication();
+builder.Services.AddApplication();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 

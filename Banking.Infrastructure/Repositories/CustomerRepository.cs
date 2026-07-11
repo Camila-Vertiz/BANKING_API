@@ -33,7 +33,7 @@ namespace Banking.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public Task UpdateAsync(Customer customer)
+        public Task UpdateProfileAsync(Customer customer)
         {
             _context.Customers.Update(customer);
             return Task.CompletedTask;

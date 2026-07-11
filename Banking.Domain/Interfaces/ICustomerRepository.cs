@@ -7,6 +7,6 @@ namespace Banking.Domain.Interfaces
         Task<Customer?> GetByIdAsync(Guid Id);
         Task<IEnumerable<Customer>> GetAllAsync();
         Task AddAsync(Customer customer);
-        Task UpdateAsync(Customer customer);
+        Task UpdateProfileAsync(Customer customer);
     }
 }

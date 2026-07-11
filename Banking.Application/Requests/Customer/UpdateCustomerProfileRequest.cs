@@ -1,6 +1,6 @@
 ﻿namespace Banking.Application.Request.Customer
 {
-    public class UpdateCustomerRequest
+    public class UpdateCustomerProfileRequest
     {
         public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;
