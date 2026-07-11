@@ -1,7 +1,9 @@
 ﻿using Banking.Domain.Entities;
+using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Banking.Infrastructure.Repositories
 {
@@ -26,11 +28,11 @@ namespace Banking.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Customer?> GetByDocumentNumberAsync(string documentNumber)
+        public async Task<Customer?> GetByDocumentAsync(DocumentTypeEnum documentType, string documentNumber)
         {
             return await _context.Customers
                .Include(x => x.BankAccounts)
-               .FirstOrDefaultAsync(x => x.DocumentNumber == documentNumber);
+               .FirstOrDefaultAsync(x => x.DocumentType == documentType && x.DocumentNumber == documentNumber);
         }
 
         public async Task<Customer?> GetByIdAsync(Guid Id)

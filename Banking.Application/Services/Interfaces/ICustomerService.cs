@@ -1,5 +1,7 @@
 ﻿using Banking.Application.Request.Customer;
+using Banking.Application.Requests.Customer;
 using Banking.Application.Responses;
+using Banking.Domain.Enums;
 
 namespace Banking.Application.Services.Interfaces
 {
@@ -8,7 +10,7 @@ namespace Banking.Application.Services.Interfaces
         Task<CustomerResponse> CreateAsync(CreateCustomerRequest request);
 
         Task<CustomerResponse?> GetByIdAsync(Guid id);
-        Task<CustomerResponse?> GetByDocumentNumberAsync(string documentNumber);
+        Task<CustomerResponse?> GetByDocumentAsync(GetCustomerByDocumentRequest request);
 
         Task<IEnumerable<CustomerResponse>> GetAllAsync();
 

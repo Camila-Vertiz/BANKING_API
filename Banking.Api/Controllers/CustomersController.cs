@@ -1,5 +1,7 @@
 ﻿using Banking.Application.Request.Customer;
+using Banking.Application.Requests.Customer;
 using Banking.Application.Services.Interfaces;
+using Banking.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.Api.Controllers
@@ -36,10 +38,10 @@ namespace Banking.Api.Controllers
             return Ok(customer);
         }
 
-        [HttpGet("documentNumber/{documentNumber}")]
-        public async Task<IActionResult> GetByDocumentNumber(string documentNumber)
+        [HttpPost("documentNumber")]
+        public async Task<IActionResult> GetByDocumentNumber(GetCustomerByDocumentRequest request)
         {
-            var customer = await _customerService.GetByDocumentNumberAsync(documentNumber);
+            var customer = await _customerService.GetByDocumentAsync(request);
 
             if (customer is null)
                 return NotFound();

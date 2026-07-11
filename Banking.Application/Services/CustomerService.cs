@@ -1,7 +1,9 @@
 ﻿using Banking.Application.Request.Customer;
+using Banking.Application.Requests.Customer;
 using Banking.Application.Responses;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
+using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using FluentValidation;
 
@@ -76,9 +78,9 @@ namespace Banking.Application.Services
             return MapToResponse(customer);
         }
 
-        public async Task<CustomerResponse?> GetByDocumentNumberAsync(string documentNumber)
+        public async Task<CustomerResponse?> GetByDocumentAsync(GetCustomerByDocumentRequest request)
         {
-            var customer = await _customerRepository.GetByDocumentNumberAsync(documentNumber);
+            var customer = await _customerRepository.GetByDocumentAsync(request.DocumentType, request.DocumentNumber);
 
             if (customer is null)
                 return null;
