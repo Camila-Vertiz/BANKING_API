@@ -67,6 +67,16 @@ namespace Banking.Application.Services
             return MapToResponse(customer);
         }
 
+        public async Task<CustomerResponse?> GetByDocumentNumberAsync(string documentNumber)
+        {
+            var customer = await _customerRepository.GetByDocumentNumberAsync(documentNumber);
+
+            if (customer is null)
+                return null;
+
+            return MapToResponse(customer);
+        }
+
         public async Task UpdateProfileAsync(Guid id, UpdateCustomerProfileRequest request)
         {
             var customer = await _customerRepository.GetByIdAsync(id);

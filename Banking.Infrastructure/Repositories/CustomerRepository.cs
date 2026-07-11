@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Infrastructure.Repositories
 {
-    public class CustomerRepository:ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly BankingDbContext _context;
 
@@ -24,6 +24,13 @@ namespace Banking.Infrastructure.Repositories
             return await _context.Customers
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<Customer?> GetByDocumentNumberAsync(string documentNumber)
+        {
+            return await _context.Customers
+               .Include(x => x.BankAccounts)
+               .FirstOrDefaultAsync(x => x.DocumentNumber == documentNumber);
         }
 
         public async Task<Customer?> GetByIdAsync(Guid Id)

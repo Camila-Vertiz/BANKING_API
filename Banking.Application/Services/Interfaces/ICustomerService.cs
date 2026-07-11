@@ -8,6 +8,7 @@ namespace Banking.Application.Services.Interfaces
         Task<CustomerResponse> CreateAsync(CreateCustomerRequest request);
 
         Task<CustomerResponse?> GetByIdAsync(Guid id);
+        Task<CustomerResponse?> GetByDocumentNumberAsync(string documentNumber);
 
         Task<IEnumerable<CustomerResponse>> GetAllAsync();
 

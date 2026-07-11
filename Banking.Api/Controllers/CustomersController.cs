@@ -36,6 +36,17 @@ namespace Banking.Api.Controllers
             return Ok(customer);
         }
 
+        [HttpGet("documentNumber/{documentNumber}")]
+        public async Task<IActionResult> GetByDocumentNumber(string documentNumber)
+        {
+            var customer = await _customerService.GetByDocumentNumberAsync(documentNumber);
+
+            if (customer is null)
+                return NotFound();
+
+            return Ok(customer);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
