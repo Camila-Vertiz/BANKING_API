@@ -18,6 +18,8 @@ namespace Banking.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateCustomerRequest request)
         {
             var result = await _customerService.CreateAsync(request);
