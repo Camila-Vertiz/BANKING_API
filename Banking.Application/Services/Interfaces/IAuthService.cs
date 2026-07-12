@@ -1,5 +1,4 @@
 ﻿using Banking.Application.Requests.Auth;
-using Banking.Application.Requests.User;
 using Banking.Application.Responses;
 
 namespace Banking.Application.Services.Interfaces

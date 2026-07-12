@@ -20,6 +20,13 @@ namespace Banking.Infrastructure.Repositories
             await _context.BankAccounts.AddAsync(bankAccount);
         }
 
+        public async Task<IEnumerable<BankAccount>> GetByCustomerIdAsync(Guid customerId)
+        {
+            return await _context.BankAccounts
+                .Where(x => x.CustomerId == customerId)
+                .ToListAsync();
+        }
+
         public async Task<BankAccount?> GetByIdAsync(Guid id)
         {
             return await _context.BankAccounts
@@ -37,5 +44,6 @@ namespace Banking.Infrastructure.Repositories
             _context.BankAccounts.Update(bankAccount);
             return Task.CompletedTask;
         }
+
     }
 }

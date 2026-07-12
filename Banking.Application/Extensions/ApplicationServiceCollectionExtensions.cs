@@ -20,6 +20,8 @@ namespace Banking.Application.Extensions
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
+            services.AddScoped<IBankAccountService, BankAccountService>();
+
             services.AddValidatorsFromAssembly(typeof(ApplicationServiceCollectionExtensions).Assembly);
             return services;
         }

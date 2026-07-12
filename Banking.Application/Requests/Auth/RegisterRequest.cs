@@ -1,7 +1,6 @@
-﻿
-using Banking.Domain.Enums;
+﻿using Banking.Domain.Enums;
 
-namespace Banking.Application.Requests.User
+namespace Banking.Application.Requests.Auth
 {
     public class RegisterRequest
     {

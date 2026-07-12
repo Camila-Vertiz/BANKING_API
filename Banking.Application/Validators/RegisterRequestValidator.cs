@@ -1,4 +1,4 @@
-﻿using Banking.Application.Requests.User;
+﻿using Banking.Application.Requests.Auth;
 using FluentValidation;
 
 namespace Banking.Application.Validators

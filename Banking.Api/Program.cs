@@ -1,6 +1,8 @@
 using Banking.Api.Middleware;
 using Banking.Application.Extensions;
 using Banking.Application.Security;
+using Banking.Application.Security.Interfaces;
+using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -83,6 +85,19 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider
+        .GetRequiredService<BankingDbContext>();
+
+    var passwordHasher = scope.ServiceProvider
+        .GetRequiredService<IPasswordHasher>();
+
+    await DatabaseSeeder.SeedAsync(
+        context,
+        passwordHasher);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
