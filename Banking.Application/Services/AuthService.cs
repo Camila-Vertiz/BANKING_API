@@ -4,6 +4,7 @@ using Banking.Application.Responses;
 using Banking.Application.Security.Interfaces;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
+using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 
 namespace Banking.Application.Services
@@ -11,17 +12,20 @@ namespace Banking.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUnitOfWork _unitOfWork;
 
         public AuthService(
             IUserRepository userRepository,
+            ICustomerRepository customerRepository,
             IPasswordHasher passwordHasher,
             IUnitOfWork unitOfWork,
             IJwtTokenGenerator jwtTokenGenerator)
         {
             _userRepository = userRepository;
+            _customerRepository = customerRepository;
             _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
             _jwtTokenGenerator = jwtTokenGenerator;
@@ -38,7 +42,8 @@ namespace Banking.Application.Services
             };
         }
 
-        public async Task<UserResponse> RegisterAsync(RegisterRequest request)
+
+        public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
             var exists = await _userRepository.ExistsByUsernameAsync(request.UserName);
 
@@ -52,14 +57,31 @@ namespace Banking.Application.Services
             var user = new User(
                 request.UserName.ToLower(),
                 hashedPassword,
-                request.Role
+                UserRoleEnum.Customer
             );
 
             await _userRepository.AddAsync(user);
 
+            var customer = new Customer(
+                request.DocumentType,
+                request.DocumentNumber,
+                request.FullName,
+                request.Email,
+                user.Id
+            );
+
+            await _customerRepository.AddAsync(customer);
+
             await _unitOfWork.SaveChangesAsync();
 
-            return MapToResponse(user);
+            return new RegisterResponse
+            {
+                UserId = user.Id,
+                CustomerId = customer.Id,
+                UserName = user.UserName,
+                Role = user.Role.ToString(),
+                CreatedAtUtc = user.CreatedAtUtc
+            };
         }
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)

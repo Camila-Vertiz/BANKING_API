@@ -9,6 +9,12 @@ namespace Banking.Application.Requests.User
 
         public string Password { get; set; } = null!;
 
-        public UserRoleEnum Role { get; set; }
+        public DocumentTypeEnum DocumentType { get; set; }
+
+        public string DocumentNumber { get; set; } = null!;
+
+        public string FullName { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
     }
 }

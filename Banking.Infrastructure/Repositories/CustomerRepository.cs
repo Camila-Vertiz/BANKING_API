@@ -3,7 +3,6 @@ using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace Banking.Infrastructure.Repositories
 {

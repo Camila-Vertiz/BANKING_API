@@ -2,7 +2,6 @@
 using Banking.Application.Requests.User;
 using Banking.Application.Responses;
 using Banking.Application.Services.Interfaces;
-using Banking.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.Api.Controllers
@@ -20,9 +19,9 @@ namespace Banking.Api.Controllers
 
         [HttpPost("register")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(UserResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserResponse>> Register(RegisterRequest request)
+        public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest request)
         {
             var response =
                 await _authService.RegisterAsync(request);

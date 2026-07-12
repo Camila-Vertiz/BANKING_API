@@ -1,7 +1,6 @@
 ﻿using Banking.Domain.Interfaces;
-using Banking.Infrastructure.Data;
 
-namespace Banking.Infrastructure
+namespace Banking.Infrastructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {

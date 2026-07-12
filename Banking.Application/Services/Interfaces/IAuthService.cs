@@ -6,7 +6,7 @@ namespace Banking.Application.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<UserResponse> RegisterAsync(RegisterRequest request);
+        Task<RegisterResponse> RegisterAsync(RegisterRequest request);
         Task<UserResponse?> GetByIdAsync(Guid id);
 
         Task<AuthResponse> LoginAsync(LoginRequest request);
