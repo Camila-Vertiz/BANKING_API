@@ -41,6 +41,13 @@ namespace Banking.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == Id);
         }
 
+        public async Task<Customer?> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Customers
+                .Include(x => x.BankAccounts)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+        }
+
         public Task UpdateProfileAsync(Customer customer)
         {
             _context.Customers.Update(customer);

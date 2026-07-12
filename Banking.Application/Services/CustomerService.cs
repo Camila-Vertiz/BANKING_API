@@ -1,6 +1,7 @@
 ﻿using Banking.Application.Request.Customer;
 using Banking.Application.Requests.Customer;
 using Banking.Application.Responses;
+using Banking.Application.Security.Interfaces;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
@@ -11,15 +12,18 @@ namespace Banking.Application.Services
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CreateCustomerRequest> _createCustomerValidator;
 
         public CustomerService(
             ICustomerRepository customerRepository,
+            ICurrentUserService currentUserService,
             IUnitOfWork unitOfWork,
             IValidator<CreateCustomerRequest> createCustomerValidator)
         {
             _customerRepository = customerRepository;
+            _currentUserService = currentUserService;
             _unitOfWork = unitOfWork;
             _createCustomerValidator = createCustomerValidator;
         }
@@ -69,7 +73,24 @@ namespace Banking.Application.Services
 
         public async Task<CustomerResponse?> GetByIdAsync(Guid id)
         {
-            var customer = await _customerRepository.GetByIdAsync(id);
+            Customer? customer;
+
+            if (_currentUserService.Role == "Admin")
+            {
+                customer = await _customerRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null)
+                    return null;
+
+                customer = await _customerRepository.GetByUserIdAsync(userId.Value);
+
+                if (customer?.Id != id)
+                    return null;
+            }
 
             if (customer is null)
                 return null;

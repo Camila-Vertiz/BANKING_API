@@ -30,6 +30,7 @@ namespace Banking.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetById(Guid id)
         {
             var customer = await _customerService.GetByIdAsync(id);
@@ -53,6 +54,7 @@ namespace Banking.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var customers = await _customerService.GetAllAsync();
