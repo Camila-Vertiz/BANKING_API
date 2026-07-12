@@ -22,6 +22,8 @@ namespace Banking.Application.Extensions
 
             services.AddScoped<IBankAccountService, BankAccountService>();
 
+            services.AddScoped<ITransactionService, TransactionService>();
+
             services.AddValidatorsFromAssembly(typeof(ApplicationServiceCollectionExtensions).Assembly);
             return services;
         }

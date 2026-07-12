@@ -27,5 +27,14 @@ namespace Banking.Infrastructure.Repositories
                 .OrderByDescending(x => x.DateUtc)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Transaction>> GetByTraceIdAsync(Guid traceId)
+        {
+            return await _context.Transactions
+                .AsNoTracking()
+                .Where(x => x.TraceId == traceId)
+                .OrderBy(x => x.DateUtc)
+                .ToListAsync();
+        }
     }
 }

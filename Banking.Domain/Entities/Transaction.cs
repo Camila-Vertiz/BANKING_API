@@ -10,10 +10,10 @@ namespace Banking.Domain.Entities
         public CurrencyEnum Currency { get; private set; }
         public DateTimeOffset DateUtc { get; private set; }
         public string Description { get; private set; } = null!;
-        public Guid? CorrelationId { get; private set; }
+        public Guid? TraceId { get; private set; }
 
         private Transaction() { }
-        public Transaction(Guid accountId, decimal amount, TransactionTypeEnum transactionType, CurrencyEnum currency = CurrencyEnum.Pen, string description = "", Guid? correlationId = null)
+        public Transaction(Guid accountId, decimal amount, TransactionTypeEnum transactionType, CurrencyEnum currency = CurrencyEnum.Pen, string description = "", Guid? traceId = null)
         {
             if (amount <= 0)
                 throw new ArgumentException("Amount must be greater than zero.", nameof(amount));
@@ -25,7 +25,7 @@ namespace Banking.Domain.Entities
             TransactionType = transactionType;
             DateUtc = DateTimeOffset.UtcNow;
             Description = description;
-            CorrelationId = correlationId;
+            TraceId = traceId;
         }
 
     }

@@ -6,5 +6,7 @@ namespace Banking.Domain.Interfaces
     {
         Task AddAsync(Transaction transaction);
         Task<IEnumerable<Transaction>> GetByAccountIdAsync(Guid accountId);
+        Task<IEnumerable<Transaction>> GetByTraceIdAsync(Guid traceId);
+
     }
 }

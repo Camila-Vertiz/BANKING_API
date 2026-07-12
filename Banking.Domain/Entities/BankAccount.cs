@@ -85,5 +85,13 @@ namespace Banking.Domain.Entities
                 throw new InvalidOperationException("Cannot activate a closed account.");
             Status = BankAccountStatusEnum.Active;
         }
+
+        public void AddTransaction(Transaction transaction)
+        {
+            if (transaction is null)
+                throw new ArgumentNullException(nameof(transaction));
+
+            _transactions.Add(transaction);
+        }
     }
 }

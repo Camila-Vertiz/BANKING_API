@@ -84,7 +84,7 @@ namespace Banking.Infrastructure.Migrations
                     Currency = table.Column<int>(type: "int", nullable: false),
                     DateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    CorrelationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    TraceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -135,7 +135,7 @@ namespace Banking.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_CorrelationId",
                 table: "Transactions",
-                column: "CorrelationId");
+                column: "TraceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",

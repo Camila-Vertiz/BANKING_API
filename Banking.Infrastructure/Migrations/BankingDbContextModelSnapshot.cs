@@ -117,7 +117,7 @@ namespace Banking.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("CorrelationId")
+                    b.Property<Guid?>("TraceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Currency")
@@ -138,7 +138,7 @@ namespace Banking.Infrastructure.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("CorrelationId");
+                    b.HasIndex("TraceId");
 
                     b.ToTable("Transactions", (string)null);
                 });

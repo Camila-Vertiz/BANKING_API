@@ -39,12 +39,12 @@ namespace Banking.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(250);
 
-            builder.Property(x => x.CorrelationId)
+            builder.Property(x => x.TraceId)
                 .IsRequired(false);
 
             builder.HasIndex(x => x.AccountId);
 
-            builder.HasIndex(x => x.CorrelationId);
+            builder.HasIndex(x => x.TraceId);
         }
     }
 }
