@@ -1,5 +1,6 @@
 ﻿using Banking.Application.Requests.BankAccount;
 using Banking.Application.Responses;
+using Banking.Application.Security.Interfaces;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
@@ -10,16 +11,19 @@ namespace Banking.Application.Services
     {
         private readonly IBankAccountRepository _bankAccountRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IUnitOfWork _unitOfWork;
 
 
         public BankAccountService(
             IBankAccountRepository bankAccountRepository,
             ICustomerRepository customerRepository,
+            ICurrentUserService currentUserService,
             IUnitOfWork unitOfWork)
         {
             _bankAccountRepository = bankAccountRepository;
             _customerRepository = customerRepository;
+            _currentUserService = currentUserService;
             _unitOfWork = unitOfWork;
         }
 
@@ -53,16 +57,66 @@ namespace Banking.Application.Services
         }
 
 
-        public Task<BankAccountResponse?> GetByIdAsync(Guid id)
+        public async Task<BankAccountResponse?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var account = await _bankAccountRepository
+                .GetByIdAsync(id);
+
+            if (account is null)
+                return null;
+
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null)
+                    return null;
+
+
+                var customer = await _customerRepository
+                    .GetByIdAsync(account.CustomerId);
+
+
+                if (customer is null ||
+                    customer.UserId != userId)
+                {
+                    return null;
+                }
+            }
+
+
+            return MapToResponse(account);
         }
 
 
-        public Task<IEnumerable<BankAccountResponse>> GetByCustomerIdAsync(
+        public async Task<IEnumerable<BankAccountResponse>> GetByCustomerIdAsync(
             Guid customerId)
         {
-            throw new NotImplementedException();
+            var customer = await _customerRepository
+                .GetByIdAsync(customerId);
+
+            if (customer is null)
+                return Enumerable.Empty<BankAccountResponse>();
+
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null ||
+                    customer.UserId != userId)
+                {
+                    return Enumerable.Empty<BankAccountResponse>();
+                }
+            }
+
+
+            var accounts = await _bankAccountRepository
+                .GetByCustomerIdAsync(customerId);
+
+
+            return accounts.Select(MapToResponse);
         }
 
         private async Task<string> GenerateAccountNumber()

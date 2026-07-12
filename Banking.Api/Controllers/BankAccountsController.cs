@@ -52,5 +52,17 @@ namespace Banking.Api.Controllers
 
             return Ok(account);
         }
+
+        [HttpGet("customer/{customerId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetByCustomerId(Guid customerId)
+        {
+            var accounts = await _bankAccountService
+                .GetByCustomerIdAsync(customerId);
+
+            return Ok(accounts);
+        }
     }
 }
