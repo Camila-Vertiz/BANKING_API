@@ -64,5 +64,21 @@ namespace Banking.Api.Controllers
 
             return Ok(accounts);
         }
+
+        [HttpGet("{id}/balance")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetBalance(Guid id)
+        {
+            var result = await _bankAccountService
+                .GetBalanceAsync(id);
+
+            if (result is null)
+                return NotFound();
+
+            return Ok(result);
+        }
     }
 }

@@ -148,6 +148,40 @@ namespace Banking.Application.Services
             return number;
         }
 
+        public async Task<BalanceResponse?> GetBalanceAsync(Guid id)
+        {
+            var account = await _bankAccountRepository
+                .GetByIdAsync(id);
+
+            if (account is null)
+                return null;
+
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                var customer = await _customerRepository
+                    .GetByIdAsync(account.CustomerId);
+
+
+                if (customer is null ||
+                    customer.UserId != userId)
+                {
+                    throw new UnauthorizedAccessException(
+                        "You cannot access this account.");
+                }
+            }
+
+
+            return new BalanceResponse
+            {
+                AccountId = account.Id,
+                Balance = account.Balance,
+                Currency = account.Currency
+            };
+        }
+
         private static BankAccountResponse MapToResponse(
             BankAccount bankAccount)
         {
