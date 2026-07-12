@@ -4,6 +4,7 @@ using Banking.Application.Security.Interfaces;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Interfaces;
+using FluentValidation;
 
 namespace Banking.Application.Services
 {
@@ -12,25 +13,35 @@ namespace Banking.Application.Services
         private readonly IBankAccountRepository _bankAccountRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IValidator<CreateBankAccountRequest> _createBankAccountValidator;
         private readonly IUnitOfWork _unitOfWork;
 
 
         public BankAccountService(
             IBankAccountRepository bankAccountRepository,
             ICustomerRepository customerRepository,
+            IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService,
-            IUnitOfWork unitOfWork)
+            IValidator<CreateBankAccountRequest> createBankAccountValidator)
         {
             _bankAccountRepository = bankAccountRepository;
             _customerRepository = customerRepository;
-            _currentUserService = currentUserService;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
+            _createBankAccountValidator = createBankAccountValidator;
         }
 
 
         public async Task<BankAccountResponse> CreateAsync(
             CreateBankAccountRequest request)
         {
+            var validationResult =
+                await _createBankAccountValidator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+
             var customer = await _customerRepository
                 .GetByIdAsync(request.CustomerId);
 
