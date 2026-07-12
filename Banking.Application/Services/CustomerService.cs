@@ -66,7 +66,29 @@ namespace Banking.Application.Services
 
         public async Task<IEnumerable<CustomerResponse>> GetAllAsync()
         {
-            var customers = await _customerRepository.GetAllAsync();
+            IEnumerable<Customer> customers;
+
+            if (_currentUserService.Role == "Admin")
+            {
+                customers = await _customerRepository.GetAllAsync();
+            }
+            else
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null)
+                    return Enumerable.Empty<CustomerResponse>();
+
+                var customer = await _customerRepository.GetByUserIdAsync(userId.Value);
+
+                if (customer is null)
+                    return Enumerable.Empty<CustomerResponse>();
+
+                customers = new List<Customer>
+                {
+                    customer
+                };
+            }
 
             return customers.Select(MapToResponse);
         }
