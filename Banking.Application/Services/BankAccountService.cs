@@ -92,7 +92,8 @@ namespace Banking.Application.Services
                 if (customer is null ||
                     customer.UserId != userId)
                 {
-                    return null;
+                    throw new UnauthorizedAccessException(
+                        "You cannot access this account.");
                 }
             }
 
@@ -118,7 +119,7 @@ namespace Banking.Application.Services
                 if (userId is null ||
                     customer.UserId != userId)
                 {
-                    return Enumerable.Empty<BankAccountResponse>();
+                    throw new UnauthorizedAccessException( "You cannot access this customer accounts.");
                 }
             }
 
