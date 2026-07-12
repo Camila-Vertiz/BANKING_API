@@ -41,7 +41,7 @@ namespace Banking.Api.Controllers
             return Ok(customer);
         }
 
-        [HttpPost("documentNumber")]
+        [HttpPost("document")]
         [Authorize]
         public async Task<IActionResult> GetByDocumentNumber(GetCustomerByDocumentRequest request)
         {

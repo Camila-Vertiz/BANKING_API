@@ -122,10 +122,26 @@ namespace Banking.Application.Services
 
         public async Task<CustomerResponse?> GetByDocumentAsync(GetCustomerByDocumentRequest request)
         {
-            var customer = await _customerRepository.GetByDocumentAsync(request.DocumentType, request.DocumentNumber);
+            var customer = await _customerRepository
+                .GetByDocumentAsync(
+                    request.DocumentType,
+                    request.DocumentNumber);
 
             if (customer is null)
                 return null;
+
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null)
+                    return null;
+
+                if (customer.UserId != userId)
+                    return null;
+            }
+
 
             return MapToResponse(customer);
         }
