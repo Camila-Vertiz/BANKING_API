@@ -24,7 +24,7 @@ namespace Banking.Application.Security
             var claims = new[]
             {
                 new Claim(
-                    JwtRegisteredClaimNames.Sub,
+                    ClaimTypes.NameIdentifier,
                     user.Id.ToString()),
 
                 new Claim(

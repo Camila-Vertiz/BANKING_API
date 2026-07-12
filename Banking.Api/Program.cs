@@ -72,12 +72,13 @@ builder.Services.AddSwaggerGen(options =>
         });
 
     options.AddSecurityRequirement(document =>
-    new OpenApiSecurityRequirement
     {
+        return new OpenApiSecurityRequirement
         {
-            new OpenApiSecuritySchemeReference("Bearer"),
-            new List<string>()
-        }
+            [
+                new OpenApiSecuritySchemeReference("Bearer")
+            ] = []
+        };
     });
 });
 

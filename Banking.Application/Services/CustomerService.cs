@@ -3,7 +3,6 @@ using Banking.Application.Requests.Customer;
 using Banking.Application.Responses;
 using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
-using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using FluentValidation;
 
