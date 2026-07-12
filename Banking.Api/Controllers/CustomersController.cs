@@ -61,7 +61,8 @@ namespace Banking.Api.Controllers
             return Ok(customers);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(Guid id, UpdateCustomerProfileRequest request)
         {
             var customer = await _customerService.GetByIdAsync(id);

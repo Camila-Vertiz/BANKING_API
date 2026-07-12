@@ -153,7 +153,20 @@ namespace Banking.Application.Services
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found.");
 
-            customer.UpdateBasicInfo(request.FullName, request.Email);
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null || customer.UserId != userId)
+                    throw new UnauthorizedAccessException(
+                        "You cannot update this customer.");
+            }
+
+
+            customer.UpdateBasicInfo(
+                request.FullName,
+                request.Email);
 
             await _unitOfWork.SaveChangesAsync();
         }
