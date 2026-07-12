@@ -47,6 +47,8 @@ builder.Services.AddAuthentication(
             };
     });
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.Configure<JwtSettings>(
