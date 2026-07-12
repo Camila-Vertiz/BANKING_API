@@ -32,6 +32,9 @@ namespace Banking.Domain.Entities
         }
         public void ChangePassword(string newPasswordHash)
         {
+            if (string.IsNullOrWhiteSpace(newPasswordHash))
+                throw new ArgumentException();
+
             PasswordHash = newPasswordHash;
         }
     }

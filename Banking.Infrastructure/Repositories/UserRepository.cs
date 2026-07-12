@@ -26,17 +26,19 @@ namespace Banking.Infrastructure.Repositories
 
         public async Task<bool> ExistsByUsernameAsync(string userName)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == userName);
+            var normalized = userName.ToLower();
+            return await _context.Users.AnyAsync(x => x.UserName.ToLower() == normalized);
+        }
+
+        public async Task<User?> GetActiveUserByUsernameAsync(string userName)
+        {
+            var normalized = userName.ToLower();
+            return await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower() == normalized && x.IsActive == true);
         }
 
         public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public Task<User?> GetByUsernameAsync(string userName)
-        {
-            return _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
         }
     }
 }

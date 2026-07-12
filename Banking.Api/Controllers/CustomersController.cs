@@ -1,7 +1,7 @@
 ﻿using Banking.Application.Request.Customer;
 using Banking.Application.Requests.Customer;
 using Banking.Application.Services.Interfaces;
-using Banking.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.Api.Controllers
@@ -39,6 +39,7 @@ namespace Banking.Api.Controllers
         }
 
         [HttpPost("documentNumber")]
+        [Authorize]
         public async Task<IActionResult> GetByDocumentNumber(GetCustomerByDocumentRequest request)
         {
             var customer = await _customerService.GetByDocumentAsync(request);
