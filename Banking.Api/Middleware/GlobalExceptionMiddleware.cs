@@ -31,6 +31,10 @@ namespace Banking.Api.Middleware
             {
                 await HandleNotFoundExceptionAsync(context, ex);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                await HandleUnauthorizedExceptionAsync(context, ex);
+            }
             catch (Exception ex)
             {
                 await HandleGenericExceptionAsync(context, ex);
@@ -91,6 +95,24 @@ namespace Banking.Api.Middleware
             };
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+
+        private static async Task HandleUnauthorizedExceptionAsync(
+            HttpContext context,
+            UnauthorizedAccessException exception)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+
+            context.Response.ContentType = "application/json";
+
+            var response = new
+            {
+                statusCode = 403,
+                message = exception.Message
+            };
+
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(response));
         }
     }
 }
