@@ -18,7 +18,13 @@ namespace Banking.Api.Controllers
             _transactionService = transactionService;
         }
 
-
+        /// <summary>
+        /// Executes a money transfer between two bank accounts.
+        /// </summary>
+        /// <remarks>
+        /// The authenticated customer can only transfer money from their own account.
+        /// Administrators can operate on any account.
+        /// </remarks>
         [HttpPost("transfer")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -34,7 +40,13 @@ namespace Banking.Api.Controllers
             return Ok(result);
         }
 
-
+        /// <summary>
+        /// Retrieves transactions from a specific bank account.
+        /// </summary>
+        /// <remarks>
+        /// Customers can only access their own account movements.
+        /// Administrators can access any account.
+        /// </remarks>
         [HttpGet("account/{accountId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,6 +61,12 @@ namespace Banking.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Retrieves all transactions associated with a trace identifier.
+        /// </summary>
+        /// <remarks>
+        /// Used for audit purposes. Only administrators can access this endpoint.
+        /// </remarks>
         [HttpGet("trace/{traceId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,6 +80,13 @@ namespace Banking.Api.Controllers
             return Ok(transactions);
         }
 
+        /// <summary>
+        /// Creates a deposit into a bank account.
+        /// </summary>
+        /// <remarks>
+        /// Only administrators can perform deposits.
+        /// A credit transaction will be created automatically.
+        /// </remarks>
         [HttpPost("deposit")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
