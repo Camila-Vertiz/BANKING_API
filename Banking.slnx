@@ -3,5 +3,5 @@
   <Project Path="Banking.Application/Banking.Application.csproj" />
   <Project Path="Banking.Domain/Banking.Domain.csproj" />
   <Project Path="Banking.Infrastructure/Banking.Infrastructure.csproj" />
-  <Project Path="Banking.Tests/Banking.Tests.csproj" />
+  <Project Path="xUnit Test Project/xUnit Test Project.csproj" Id="4f64c0c0-902a-4ebb-99ff-a079e439131a" />
 </Solution>
