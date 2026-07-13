@@ -35,6 +35,10 @@ namespace Banking.Api.Middleware
             {
                 await HandleUnauthorizedExceptionAsync(context, ex);
             }
+            catch (InvalidOperationException ex)
+            {
+                await HandleConflictExceptionAsync(context, ex);
+            }
             catch (Exception ex)
             {
                 await HandleGenericExceptionAsync(context, ex);
@@ -45,7 +49,7 @@ namespace Banking.Api.Middleware
             HttpContext context,
             ValidationException exception)
         {
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
             context.Response.ContentType = "application/json";
 
@@ -108,6 +112,24 @@ namespace Banking.Api.Middleware
             var response = new
             {
                 statusCode = 403,
+                message = exception.Message
+            };
+
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(response));
+        }
+
+        private static async Task HandleConflictExceptionAsync(
+            HttpContext context,
+            InvalidOperationException exception)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+
+            context.Response.ContentType = "application/json";
+
+            var response = new
+            {
+                statusCode = 409,
                 message = exception.Message
             };
 
