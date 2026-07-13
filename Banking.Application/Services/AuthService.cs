@@ -51,6 +51,16 @@ namespace Banking.Application.Services
                 throw new InvalidOperationException("Username already exists.");
             }
 
+            var existingCustomer = await _customerRepository
+                                            .GetByDocumentAsync(
+                                                request.DocumentType,
+                                                request.DocumentNumber);
+
+            if (existingCustomer != null)
+            {
+                throw new InvalidOperationException("Document already exists.");
+            }
+
             var hashedPassword = _passwordHasher.Hash(request.Password);
 
             var user = new User(
