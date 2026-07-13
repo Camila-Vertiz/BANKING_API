@@ -136,44 +136,6 @@ namespace Banking.Application.Services
             };
         }
 
-
-        public async Task<IEnumerable<TransactionResponse>> GetByAccountIdAsync(
-            Guid accountId)
-        {
-            var account = await _bankAccountRepository
-                .GetByIdAsync(accountId);
-
-            if (account is null)
-                return Enumerable.Empty<TransactionResponse>();
-
-
-            if (_currentUserService.Role != "Admin")
-            {
-                var userId = _currentUserService.UserId;
-
-                if (userId is null)
-                    return Enumerable.Empty<TransactionResponse>();
-
-
-                var customer = await _customerRepository
-                    .GetByIdAsync(account.CustomerId);
-
-
-                if (customer is null ||
-                    customer.UserId != userId)
-                {
-                    return Enumerable.Empty<TransactionResponse>();
-                }
-            }
-
-
-            var transactions = await _transactionRepository
-                .GetByAccountIdAsync(accountId);
-
-
-            return transactions.Select(MapToResponse);
-        }
-
         public async Task<IEnumerable<TransactionResponse>> GetByTraceIdAsync(
             Guid traceId)
         {

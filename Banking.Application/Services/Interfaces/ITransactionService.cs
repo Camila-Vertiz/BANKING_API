@@ -7,8 +7,6 @@ namespace Banking.Application.Services.Interfaces
     {
         Task<IEnumerable<TransactionResponse>> TransferAsync(TransferRequest request);
 
-        Task<IEnumerable<TransactionResponse>> GetByAccountIdAsync(Guid accountId);
-
         Task<IEnumerable<TransactionResponse>> GetByTraceIdAsync(Guid traceId);
 
         Task<TransactionResponse> DepositAsync(DepositRequest request);

@@ -1,4 +1,5 @@
 ﻿using Banking.Application.Requests.BankAccount;
+using Banking.Application.Services;
 using Banking.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +90,27 @@ namespace Banking.Api.Controllers
 
             if (result is null)
                 return NotFound();
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Retrieves transactions from a specific bank account.
+        /// </summary>
+        /// <remarks>
+        /// Customers can only access their own account movements.
+        /// Administrators can access any account.
+        /// </remarks>
+        [HttpGet("{accountId}/transactions")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetTransactionsByAccountId(
+            Guid accountId)
+        {
+            var result = await _bankAccountService
+                .GetTransactionsByAccountIdAsync(accountId);
 
             return Ok(result);
         }

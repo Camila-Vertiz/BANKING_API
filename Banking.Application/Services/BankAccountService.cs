@@ -13,6 +13,7 @@ namespace Banking.Application.Services
         private readonly IBankAccountRepository _bankAccountRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly ICurrentUserService _currentUserService;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IValidator<CreateBankAccountRequest> _createBankAccountValidator;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -22,12 +23,14 @@ namespace Banking.Application.Services
             ICustomerRepository customerRepository,
             IUnitOfWork unitOfWork,
             ICurrentUserService currentUserService,
+            ITransactionRepository transactionRepository,
             IValidator<CreateBankAccountRequest> createBankAccountValidator)
         {
             _bankAccountRepository = bankAccountRepository;
             _customerRepository = customerRepository;
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
+            _transactionRepository = transactionRepository;
             _createBankAccountValidator = createBankAccountValidator;
         }
 
@@ -205,5 +208,56 @@ namespace Banking.Application.Services
             };
         }
 
+        private static TransactionResponse MapTransactionToResponse(
+            Transaction transaction)
+        {
+            return new TransactionResponse
+            {
+                Id = transaction.Id,
+                AccountId = transaction.AccountId,
+                TransactionType = transaction.TransactionType,
+                Amount = transaction.Amount,
+                Currency = transaction.Currency,
+                DateUtc = transaction.DateUtc,
+                Description = transaction.Description,
+                TraceId = transaction.TraceId
+            };
+        }
+
+        public async Task<IEnumerable<TransactionResponse>> GetTransactionsByAccountIdAsync(Guid id)
+        {
+            var account = await _bankAccountRepository
+                .GetByIdAsync(id);
+
+            if (account is null)
+                return Enumerable.Empty<TransactionResponse>();
+
+
+            if (_currentUserService.Role != "Admin")
+            {
+                var userId = _currentUserService.UserId;
+
+                if (userId is null)
+                    return Enumerable.Empty<TransactionResponse>();
+
+
+                var customer = await _customerRepository
+                    .GetByIdAsync(account.CustomerId);
+
+
+                if (customer is null ||
+                    customer.UserId != userId)
+                {
+                    throw new UnauthorizedAccessException("You cannot access this account.");
+                }
+            }
+
+
+            var transactions = await _transactionRepository
+                .GetByAccountIdAsync(id);
+
+
+            return transactions.Select(MapTransactionToResponse);
+        }
     }
 }
