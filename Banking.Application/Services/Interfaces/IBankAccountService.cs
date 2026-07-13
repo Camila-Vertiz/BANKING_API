@@ -11,6 +11,8 @@ namespace Banking.Application.Services.Interfaces
 
         Task<IEnumerable<BankAccountResponse>> GetByCustomerIdAsync(Guid customerId);
 
+        Task<IEnumerable<BankAccountResponse>> GetAllAsync();
+
         Task<BalanceResponse?> GetBalanceAsync(Guid id);
     }
 }

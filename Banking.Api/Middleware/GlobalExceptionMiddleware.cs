@@ -45,7 +45,7 @@ namespace Banking.Api.Middleware
             HttpContext context,
             ValidationException exception)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
 
             context.Response.ContentType = "application/json";
 
@@ -65,7 +65,7 @@ namespace Banking.Api.Middleware
             HttpContext context,
             KeyNotFoundException exception)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
 
             context.Response.ContentType = "application/json";
 

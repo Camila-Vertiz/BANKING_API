@@ -20,6 +20,12 @@ namespace Banking.Infrastructure.Repositories
             await _context.BankAccounts.AddAsync(bankAccount);
         }
 
+        public async Task<IEnumerable<BankAccount>> GetAllAsync()
+        {
+            return await _context.BankAccounts
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<BankAccount>> GetByCustomerIdAsync(Guid customerId)
         {
             return await _context.BankAccounts

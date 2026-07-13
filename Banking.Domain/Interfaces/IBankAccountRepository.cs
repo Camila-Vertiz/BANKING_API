@@ -9,5 +9,6 @@ namespace Banking.Domain.Interfaces
         Task AddAsync(BankAccount bankAccount);
         Task UpdateAsync(BankAccount bankAccount);
         Task<IEnumerable<BankAccount>> GetByCustomerIdAsync(Guid customerId);
+        Task<IEnumerable<BankAccount>> GetAllAsync();
     }
 }

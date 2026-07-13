@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Banking.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/accounts")]
     public class BankAccountsController : ControllerBase
     {
         private readonly IBankAccountService _bankAccountService;
@@ -35,6 +35,18 @@ namespace Banking.Api.Controllers
                 nameof(GetById),
                 new { id = result.Id },
                 result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAccounts()
+        {
+            var accounts = await _bankAccountService.GetAllAsync();
+
+            return Ok(accounts);
         }
 
         [HttpGet("{id}")]

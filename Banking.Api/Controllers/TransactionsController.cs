@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Banking.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/transfers")]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
@@ -25,7 +25,7 @@ namespace Banking.Api.Controllers
         /// The authenticated customer can only transfer money from their own account.
         /// Administrators can operate on any account.
         /// </remarks>
-        [HttpPost("transfer")]
+        [HttpPost]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,7 +47,7 @@ namespace Banking.Api.Controllers
         /// Customers can only access their own account movements.
         /// Administrators can access any account.
         /// </remarks>
-        [HttpGet("account/{accountId}")]
+        [HttpGet("/api/accounts/{accountId}/transactions")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

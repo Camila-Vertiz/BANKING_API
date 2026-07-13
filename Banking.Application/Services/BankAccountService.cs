@@ -68,6 +68,13 @@ namespace Banking.Application.Services
         }
 
 
+        public async Task<IEnumerable<BankAccountResponse>> GetAllAsync()
+        {
+            var accounts = await _bankAccountRepository.GetAllAsync();
+
+            return accounts.Select(MapToResponse);
+        }
+
         public async Task<BankAccountResponse?> GetByIdAsync(Guid id)
         {
             var account = await _bankAccountRepository
@@ -119,7 +126,7 @@ namespace Banking.Application.Services
                 if (userId is null ||
                     customer.UserId != userId)
                 {
-                    throw new UnauthorizedAccessException( "You cannot access this customer accounts.");
+                    throw new UnauthorizedAccessException("You cannot access this customer accounts.");
                 }
             }
 
@@ -197,5 +204,6 @@ namespace Banking.Application.Services
                 CreatedAtUtc = bankAccount.CreatedAtUtc
             };
         }
+
     }
 }
