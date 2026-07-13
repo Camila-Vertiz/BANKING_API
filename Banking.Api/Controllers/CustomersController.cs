@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Banking.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/customers")]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -72,20 +72,23 @@ namespace Banking.Api.Controllers
             return Ok(customers);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Guid id, UpdateCustomerProfileRequest request)
+        public async Task<IActionResult> Update(UpdateCustomerProfileRequest request)
         {
-            var customer = await _customerService.GetByIdAsync(id);
+            GetCustomerByDocumentRequest getCustomerByDocumentRequest = new GetCustomerByDocumentRequest();
+            getCustomerByDocumentRequest.DocumentType = request.DocumentType;
+            getCustomerByDocumentRequest.DocumentNumber = request.DocumentNumber;
+            var customer = await _customerService.GetByDocumentAsync(getCustomerByDocumentRequest);
 
             if (customer is null)
                 return NotFound();
 
-            await _customerService.UpdateProfileAsync(id, request);
+            await _customerService.UpdateProfileAsync(request);
 
             return NoContent();
         }

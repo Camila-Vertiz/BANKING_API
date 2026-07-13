@@ -146,9 +146,9 @@ namespace Banking.Application.Services
             return MapToResponse(customer);
         }
 
-        public async Task UpdateProfileAsync(Guid id, UpdateCustomerProfileRequest request)
+        public async Task UpdateProfileAsync(UpdateCustomerProfileRequest request)
         {
-            var customer = await _customerRepository.GetByIdAsync(id);
+            var customer = await _customerRepository.GetByDocumentAsync(request.DocumentType, request.DocumentNumber);
 
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found.");
