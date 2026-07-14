@@ -61,36 +61,68 @@ builder.Services.Configure<JwtSettings>(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.SwaggerDoc(
+        "v1",
+        new OpenApiInfo
+        {
+            Title = "Banking API - Banco Digital Nova",
+            Version = "v1",
+            Description =
+            """
+            API REST bancaria desarrollada con .NET 8.
+
+            Permite gestionar:
+            - Usuarios y autenticación JWT.
+            - Clientes.
+            - Cuentas bancarias.
+            - Transferencias.
+            - Movimientos y auditoría mediante TraceId.
+
+            Arquitectura basada en Clean Architecture.
+            """,
+            Contact = new OpenApiContact
+            {
+                Name = "Banco Digital Nova"
+            }
+        });
+
+
+    var xmlFile =
+        $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
 
     var xmlPath = Path.Combine(
         AppContext.BaseDirectory,
         xmlFile);
 
+
     options.IncludeXmlComments(xmlPath);
 
 
     options.AddSecurityDefinition(
-        "Bearer",
-        new OpenApiSecurityScheme
-        {
-            Name = "Authorization",
-            Type = SecuritySchemeType.Http,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Description = "Ingrese el token JWT con el formato: Bearer {token}"
-        });
+    "Bearer",
+    new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingrese: Bearer {token}"
+    });
 
 
     options.AddSecurityRequirement(document =>
     {
         return new OpenApiSecurityRequirement
+    {
         {
-            [
-                new OpenApiSecuritySchemeReference("Bearer")
-            ] = []
-        };
+            new OpenApiSecuritySchemeReference(
+                "Bearer",
+                document),
+            new List<string>()
+        }
+    };
     });
 });
 

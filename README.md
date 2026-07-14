@@ -182,6 +182,7 @@ GET    /api/customers
 POST   /api/customers
 PUT    /api/customers
 GET    /api/customers/{id}
+POST   /api/customers/document
 ```
 
 ### Cuentas bancarias
@@ -199,6 +200,10 @@ GET /api/accounts/{id}/transactions
 ### Transferencias
 ```
 POST /api/transfers
+
+GET /api/transfers/trace/{traceId}
+
+POST /api/transfers/deposit
 ```
 Una transferencia genera:
 

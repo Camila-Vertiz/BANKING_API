@@ -30,6 +30,19 @@ namespace Banking.Api.Controllers
                 response);
         }
 
+        /// <summary>
+        /// Authenticates a user and generates a JWT token.
+        /// </summary>
+        /// <remarks>
+        /// The token must be used in protected endpoints
+        /// using the Authorization header.
+        /// </remarks>
+        /// <param name="request">
+        /// User credentials.
+        /// </param>
+        /// <returns>
+        /// JWT token and user information.
+        /// </returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
