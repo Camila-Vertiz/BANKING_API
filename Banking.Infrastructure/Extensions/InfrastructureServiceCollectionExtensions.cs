@@ -1,5 +1,4 @@
-﻿using Banking.Application.Security;
-using Banking.Application.Security.Interfaces;
+﻿using Banking.Application.Security.Interfaces;
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Repositories;

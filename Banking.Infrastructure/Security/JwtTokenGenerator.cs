@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Banking.Application.Security
+namespace Banking.Infrastructure.Security
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
