@@ -33,7 +33,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userName\": \"cvertiza\",\n  \"password\": \"Pa$$w0rd\",\n  \"documentType\": \"DNI\",\n  \"documentNumber\": \"70828414\",\n  \"fullName\": \"Camila Vertiz\",\n  \"email\": \"cvertiz@gmail.com\"\n}",
+              "raw": "{\n  \"userName\": \"nvertiz\",\n  \"password\": \"Pa$$w0rd\",\n  \"documentType\": \"DNI\",\n  \"documentNumber\": \"70828415\",\n  \"fullName\": \"Nala Vertiz\",\n  \"email\": \"nvertiz@gmail.com\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -67,7 +67,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userName\": \"cvertiz\",\n  \"password\": \"Pa$$w0rd\"\n}\n\n\n/*\n{\n  \"userName\": \"juan123\",\n  \"password\": \"Password123\"\n}\n*/\n\n/*\n{\n  \"userName\": \"admin\",\n  \"password\": \"Admin123!\"\n}\n*/",
+              "raw": "/*{\n  \"userName\": \"cvertiz\",\n  \"password\": \"Pa$$w0rd\"\n}\n*/\n\n/*\n{\n  \"userName\": \"juan123\",\n  \"password\": \"Password123\"\n}\n*/\n\n\n{\n  \"userName\": \"admin\",\n  \"password\": \"Admin123!\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -546,37 +546,6 @@
                   "language": "json"
                 }
               }
-            }
-          }
-        },
-        {
-          "name": "Get Transactions By Account",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "auth": {
-              "type": "bearer",
-              "bearer": {
-                "key": "token",
-                "value": "{{token}}",
-                "type": "string"
-              }
-            },
-            "description": "",
-            "url": {
-              "raw": "https://localhost:7046/api/transfers/account/38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10",
-              "protocol": "https",
-              "host": [
-                "localhost:7046"
-              ],
-              "path": [
-                "api",
-                "transfers",
-                "account",
-                "38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10"
-              ],
-              "query": [],
-              "variable": []
             }
           }
         },
