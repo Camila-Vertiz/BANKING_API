@@ -1,0 +1,624 @@
+{
+  "info": {
+    "name": "Bank",
+    "description": null,
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/auth/register",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userName\": \"cvertiza\",\n  \"password\": \"Pa$$w0rd\",\n  \"documentType\": \"DNI\",\n  \"documentNumber\": \"70828414\",\n  \"fullName\": \"Camila Vertiz\",\n  \"email\": \"cvertiz@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/Auth/login",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "login"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userName\": \"cvertiz\",\n  \"password\": \"Pa$$w0rd\"\n}\n\n\n/*\n{\n  \"userName\": \"juan123\",\n  \"password\": \"Password123\"\n}\n*/\n\n/*\n{\n  \"userName\": \"admin\",\n  \"password\": \"Admin123!\"\n}\n*/",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "const body = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"token\", body.token);",
+                  "",
+                  "console.log(pm.environment.get(\"token\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/customers",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "customers"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentType\": \"Ruc\",\n  \"documentNumber\": \"12345678901\",\n  \"fullName\": \"Empresa\",\n  \"email\": \"empresa@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Customer By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/customers/E70A87FC-3AEA-4ECE-BC70-B0D41DA092B7",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "E70A87FC-3AEA-4ECE-BC70-B0D41DA092B7"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/customers",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "customers"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Customer By Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/customers/document",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "customers",
+                "document"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentType\": \"Dni\",\n  \"documentNumber\": \"70828414\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/customers",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "customers"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentType\": \"Dni\",\n  \"documentNumber\": \"70828414\",\n  \"fullName\": \"Camila Vertiz Asmat\",\n  \"email\": \"cvertizas@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bank Accounts",
+      "item": [
+        {
+          "name": "Create BankAccount",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"837C707C-FC95-4D9D-8724-1F68D2D14955\",\n  \"currency\": \"Usd\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Bank Accounts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Bank Account By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts/988EC74A-7AF5-4517-BAF9-EB9DE18554AD",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "988EC74A-7AF5-4517-BAF9-EB9DE18554AD"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Bank Account By Customer ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts/customer/837C707C-FC95-4D9D-8724-1F68D2D14955",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "customer",
+                "837C707C-FC95-4D9D-8724-1F68D2D14955"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Bank Account Balance By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts/38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10/balance",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10",
+                "balance"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Bank Account Transfers By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/accounts/38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10/transactions",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "accounts",
+                "38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10",
+                "transactions"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Deposit",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/transfers/deposit",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "transfers",
+                "deposit"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"AccountId\": \"38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10\",\n  \"amount\": 1000,\n  \"description\": \"Depósito inicial\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Transfer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/transfers",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "transfers"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromAccountId\": \"38ee61f4-5ed1-4799-aa3a-b8dcba2d7a10\",\n  \"toAccountId\": \"988EC74A-7AF5-4517-BAF9-EB9DE18554AD\",\n  \"amount\": 600,\n  \"description\": \"Transferencia prueba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Transactions By Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/transfers/account/38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "transfers",
+                "account",
+                "38EE61F4-5ED1-4799-AA3A-B8DCBA2D7A10"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Get Trace By Trace ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "https://localhost:7046/api/transfers/trace/3e3135b2-94c4-4b5f-a791-fdc770ed7dc6",
+              "protocol": "https",
+              "host": [
+                "localhost:7046"
+              ],
+              "path": [
+                "api",
+                "transfers",
+                "trace",
+                "3e3135b2-94c4-4b5f-a791-fdc770ed7dc6"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
