@@ -238,7 +238,7 @@ namespace Banking.Application.Services
                 var userId = _currentUserService.UserId;
 
                 if (userId is null)
-                    return Enumerable.Empty<TransactionResponse>();
+                    throw new UnauthorizedAccessException("You cannot access this account.");
 
 
                 var customer = await _customerRepository

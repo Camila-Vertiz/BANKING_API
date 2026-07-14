@@ -18,6 +18,7 @@ namespace Banking.Tests.Services
         private readonly Mock<IUnitOfWork> _unitOfWork;
         private readonly Mock<ICurrentUserService> _currentUserService;
         private readonly Mock<IValidator<CreateBankAccountRequest>> _validator;
+        private readonly Mock<ITransactionRepository> _transactionRepository;
 
 
         public BankAccountServiceTests()
@@ -27,6 +28,7 @@ namespace Banking.Tests.Services
             _unitOfWork = new();
             _currentUserService = new();
             _validator = new();
+            _transactionRepository = new();
         }
 
 
@@ -69,6 +71,7 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _unitOfWork.Object,
                 _currentUserService.Object,
+                _transactionRepository.Object,
                 _validator.Object);
 
 
@@ -124,6 +127,7 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _unitOfWork.Object,
                 _currentUserService.Object,
+                _transactionRepository.Object,
                 _validator.Object);
 
 
@@ -195,6 +199,7 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _unitOfWork.Object,
                 _currentUserService.Object,
+                _transactionRepository.Object,
                 _validator.Object);
 
 
@@ -209,6 +214,68 @@ namespace Banking.Tests.Services
             await act.Should()
                 .ThrowAsync<UnauthorizedAccessException>()
                 .WithMessage("You cannot access this account.");
+        }
+
+        [Fact]
+        public async Task GetBalanceAsync_Should_Return_Balance_When_User_Owns_Account()
+        {
+            var userId = Guid.NewGuid();
+            var customerId = Guid.NewGuid();
+
+            var account = new BankAccount(
+                "1234567890",
+                customerId,
+                500,
+                CurrencyEnum.Pen);
+
+
+            var customer = new Customer(
+                DocumentTypeEnum.Dni,
+                "12345678",
+                "Juan Perez",
+                "juan@test.com",
+                userId);
+
+
+            _bankAccountRepository
+                .Setup(x => x.GetByIdAsync(account.Id))
+                .ReturnsAsync(account);
+
+
+            _customerRepository
+                .Setup(x => x.GetByIdAsync(customerId))
+                .ReturnsAsync(customer);
+
+
+            _currentUserService
+                .Setup(x => x.UserId)
+                .Returns(userId);
+
+
+            _currentUserService
+                .Setup(x => x.Role)
+                .Returns("Customer");
+
+
+            var service = new BankAccountService(
+                _bankAccountRepository.Object,
+                _customerRepository.Object,
+                _unitOfWork.Object,
+                _currentUserService.Object,
+                _transactionRepository.Object,
+                _validator.Object);
+
+
+            var result = await service.GetBalanceAsync(account.Id);
+
+
+            result.Should().NotBeNull();
+
+            result!.Balance.Should()
+                .Be(500);
+
+            result.Currency.Should()
+                .Be(CurrencyEnum.Pen);
         }
     }
 }

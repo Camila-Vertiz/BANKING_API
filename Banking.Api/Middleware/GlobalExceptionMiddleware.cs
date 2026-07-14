@@ -111,7 +111,7 @@ namespace Banking.Api.Middleware
 
             var response = new
             {
-                statusCode = 403,
+                statusCode = 401,
                 message = exception.Message
             };
 
