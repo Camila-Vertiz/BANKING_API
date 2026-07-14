@@ -61,6 +61,8 @@ builder.Services.Configure<JwtSettings>(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.UseInlineDefinitionsForEnums();
+
     options.SwaggerDoc(
         "v1",
         new OpenApiInfo

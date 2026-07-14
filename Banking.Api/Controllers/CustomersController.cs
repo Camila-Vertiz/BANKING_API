@@ -17,6 +17,18 @@ namespace Banking.Api.Controllers
             _customerService = customerService;
         }
 
+        /// <summary>
+        /// Crea un nuevo cliente bancario.
+        /// </summary>
+        /// <remarks>
+        /// Disponible únicamente para usuarios con rol Admin.
+        /// </remarks>
+        /// <param name="request">
+        /// Información personal del cliente.
+        /// </param>
+        /// <returns>
+        /// Cliente creado.
+        /// </returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -32,6 +44,15 @@ namespace Banking.Api.Controllers
                 result);
         }
 
+        /// <summary>
+        /// Obtiene un cliente mediante su identificador.
+        /// </summary>
+        /// <param name="id">
+        /// Identificador único del cliente.
+        /// </param>
+        /// <returns>
+        /// Información del cliente solicitado.
+        /// </returns>
         [HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,6 +68,15 @@ namespace Banking.Api.Controllers
             return Ok(customer);
         }
 
+        /// <summary>
+        /// Busca un cliente mediante tipo y número de documento.
+        /// </summary>
+        /// <param name="request">
+        /// Datos del documento del cliente.
+        /// </param>
+        /// <returns>
+        /// Información del cliente encontrado.
+        /// </returns>
         [HttpPost("document")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,6 +92,12 @@ namespace Banking.Api.Controllers
             return Ok(customer);
         }
 
+        /// <summary>
+        /// Obtiene la lista de clientes registrados.
+        /// </summary>
+        /// <returns>
+        /// Colección de clientes.
+        /// </returns>
         [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,6 +108,15 @@ namespace Banking.Api.Controllers
             return Ok(customers);
         }
 
+        /// <summary>
+        /// Actualiza la información del perfil de un cliente.
+        /// </summary>
+        /// <remarks>
+        /// La actualización se realiza utilizando el documento del cliente.
+        /// </remarks>
+        /// <param name="request">
+        /// Nuevos datos del cliente.
+        /// </param>
         [HttpPut]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

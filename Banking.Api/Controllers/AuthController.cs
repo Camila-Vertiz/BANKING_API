@@ -16,6 +16,18 @@ namespace Banking.Api.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Registra un nuevo usuario en el sistema bancario.
+        /// </summary>
+        /// <remarks>
+        /// Crea un usuario con rol Customer y su información asociada como cliente.
+        /// </remarks>
+        /// <param name="request">
+        /// Datos necesarios para registrar un usuario.
+        /// </param>
+        /// <returns>
+        /// Información del usuario y cliente creado.
+        /// </returns>
         [HttpPost("register")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status201Created)]
@@ -31,18 +43,24 @@ namespace Banking.Api.Controllers
         }
 
         /// <summary>
-        /// Authenticates a user and generates a JWT token.
+        /// Autentica un usuario y genera un token JWT.
         /// </summary>
         /// <remarks>
-        /// The token must be used in protected endpoints
-        /// using the Authorization header.
+        /// El token generado debe enviarse en el encabezado Authorization
+        /// para acceder a endpoints protegidos.
         /// </remarks>
         /// <param name="request">
-        /// User credentials.
+        /// Credenciales del usuario.
         /// </param>
         /// <returns>
-        /// JWT token and user information.
+        /// Token JWT e información del usuario autenticado.
         /// </returns>
+        /// <response code="200">
+        /// Usuario autenticado correctamente.
+        /// </response>
+        /// <response code="401">
+        /// Credenciales incorrectas.
+        /// </response>
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {

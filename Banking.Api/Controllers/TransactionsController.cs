@@ -19,12 +19,18 @@ namespace Banking.Api.Controllers
         }
 
         /// <summary>
-        /// Executes a money transfer between two bank accounts.
+        /// Ejecuta una transferencia entre dos cuentas bancarias.
         /// </summary>
         /// <remarks>
-        /// The authenticated customer can only transfer money from their own account.
-        /// Administrators can operate on any account.
+        /// Genera automáticamente:
+        /// - Movimiento débito en la cuenta origen.
+        /// - Movimiento crédito en la cuenta destino.
+        /// - TraceId compartido para auditoría.
+        /// Los clientes solo pueden transferir desde sus propias cuentas.
         /// </remarks>
+        /// <param name="request">
+        /// Datos necesarios para realizar la transferencia.
+        /// </param>
         [HttpPost]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -42,11 +48,15 @@ namespace Banking.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves all transactions associated with a trace identifier.
+        /// Obtiene los movimientos asociados a un TraceId.
         /// </summary>
         /// <remarks>
-        /// Used for audit purposes. Only administrators can access this endpoint.
+        /// Endpoint utilizado para auditoría.
+        /// Disponible únicamente para administradores.
         /// </remarks>
+        /// <param name="traceId">
+        /// Identificador de trazabilidad de la operación.
+        /// </param>
         [HttpGet("trace/{traceId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,12 +71,15 @@ namespace Banking.Api.Controllers
         }
 
         /// <summary>
-        /// Creates a deposit into a bank account.
+        /// Realiza un depósito en una cuenta bancaria.
         /// </summary>
         /// <remarks>
-        /// Only administrators can perform deposits.
-        /// A credit transaction will be created automatically.
+        /// Disponible únicamente para administradores.
+        /// Genera automáticamente un movimiento de crédito.
         /// </remarks>
+        /// <param name="request">
+        /// Datos del depósito.
+        /// </param>
         [HttpPost("deposit")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]

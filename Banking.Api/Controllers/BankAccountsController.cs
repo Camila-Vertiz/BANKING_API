@@ -19,7 +19,18 @@ namespace Banking.Api.Controllers
             _bankAccountService = bankAccountService;
         }
 
-
+        /// <summary>
+        /// Crea una nueva cuenta bancaria.
+        /// </summary>
+        /// <remarks>
+        /// Disponible únicamente para usuarios con rol Admin.
+        /// </remarks>
+        /// <param name="request">
+        /// Datos de la cuenta bancaria.
+        /// </param>
+        /// <returns>
+        /// Cuenta bancaria creada.
+        /// </returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -38,9 +49,16 @@ namespace Banking.Api.Controllers
                 result);
         }
 
+        /// <summary>
+        /// Obtiene todas las cuentas bancarias registradas.
+        /// </summary>
+        /// <remarks>
+        /// Endpoint disponible únicamente para administradores.
+        /// </remarks>
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAccounts()
@@ -50,6 +68,12 @@ namespace Banking.Api.Controllers
             return Ok(accounts);
         }
 
+        /// <summary>
+        /// Obtiene una cuenta bancaria por su identificador.
+        /// </summary>
+        /// <param name="id">
+        /// Identificador de la cuenta bancaria.
+        /// </param>
         [HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -66,6 +90,12 @@ namespace Banking.Api.Controllers
             return Ok(account);
         }
 
+        /// <summary>
+        /// Obtiene las cuentas asociadas a un cliente.
+        /// </summary>
+        /// <param name="customerId">
+        /// Identificador del cliente.
+        /// </param>
         [HttpGet("customer/{customerId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -78,6 +108,12 @@ namespace Banking.Api.Controllers
             return Ok(accounts);
         }
 
+        /// <summary>
+        /// Consulta el saldo actual de una cuenta bancaria.
+        /// </summary>
+        /// <param name="id">
+        /// Identificador de la cuenta bancaria.
+        /// </param>
         [HttpGet("{id}/balance")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -95,12 +131,15 @@ namespace Banking.Api.Controllers
         }
 
         /// <summary>
-        /// Retrieves transactions from a specific bank account.
+        /// Obtiene el historial de movimientos de una cuenta bancaria.
         /// </summary>
         /// <remarks>
-        /// Customers can only access their own account movements.
-        /// Administrators can access any account.
+        /// Los clientes únicamente pueden consultar sus propios movimientos.
+        /// Los administradores pueden consultar cualquier cuenta.
         /// </remarks>
+        /// <param name="accountId">
+        /// Identificador de la cuenta bancaria.
+        /// </param>
         [HttpGet("{accountId}/transactions")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
