@@ -5,6 +5,7 @@ using Banking.Application.Services.Interfaces;
 using Banking.Domain.Entities;
 using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
+using FluentValidation;
 
 namespace Banking.Application.Services
 {
@@ -15,19 +16,22 @@ namespace Banking.Application.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<RegisterRequest> _registerValidator;
 
         public AuthService(
             IUserRepository userRepository,
             ICustomerRepository customerRepository,
             IPasswordHasher passwordHasher,
             IUnitOfWork unitOfWork,
-            IJwtTokenGenerator jwtTokenGenerator)
+            IJwtTokenGenerator jwtTokenGenerator,
+            IValidator<RegisterRequest> registerValidator)
         {
             _userRepository = userRepository;
             _customerRepository = customerRepository;
             _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _registerValidator = registerValidator;
         }
 
         private static UserResponse MapToResponse(User user)
@@ -44,6 +48,11 @@ namespace Banking.Application.Services
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
+            var validationResult = await _registerValidator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var exists = await _userRepository.ExistsByUsernameAsync(request.UserName);
 
             if (exists)
@@ -119,7 +128,7 @@ namespace Banking.Application.Services
             return new AuthResponse
             {
                 Token = token,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(30)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(60)
             };
         }
 

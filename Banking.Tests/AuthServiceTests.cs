@@ -5,6 +5,7 @@ using Banking.Domain.Entities;
 using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using FluentAssertions;
+using FluentValidation;
 using Moq;
 
 namespace Banking.Tests.Services
@@ -16,6 +17,7 @@ namespace Banking.Tests.Services
         private readonly Mock<IPasswordHasher> _passwordHasher;
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGenerator;
         private readonly Mock<IUnitOfWork> _unitOfWork;
+        private readonly Mock<IValidator<RegisterRequest>> _validator;
 
 
         public AuthServiceTests()
@@ -25,6 +27,7 @@ namespace Banking.Tests.Services
             _passwordHasher = new();
             _jwtTokenGenerator = new();
             _unitOfWork = new();
+            _validator = new();
         }
 
         [Fact]
@@ -58,7 +61,8 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _passwordHasher.Object,
                 _unitOfWork.Object,
-                _jwtTokenGenerator.Object);
+                _jwtTokenGenerator.Object,
+                _validator.Object);
 
 
 
@@ -98,7 +102,8 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _passwordHasher.Object,
                 _unitOfWork.Object,
-                _jwtTokenGenerator.Object);
+                _jwtTokenGenerator.Object,
+                _validator.Object);
 
 
             var request = new LoginRequest
@@ -150,7 +155,8 @@ namespace Banking.Tests.Services
                 _customerRepository.Object,
                 _passwordHasher.Object,
                 _unitOfWork.Object,
-                _jwtTokenGenerator.Object);
+                _jwtTokenGenerator.Object,
+                _validator.Object);
 
 
             var request = new LoginRequest
