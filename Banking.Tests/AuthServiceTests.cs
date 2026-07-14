@@ -1,4 +1,5 @@
 ﻿using Banking.Application.Requests.Auth;
+using Banking.Application.Responses;
 using Banking.Application.Security.Interfaces;
 using Banking.Application.Services;
 using Banking.Domain.Entities;
@@ -6,6 +7,7 @@ using Banking.Domain.Enums;
 using Banking.Domain.Interfaces;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 
 namespace Banking.Tests.Services
@@ -17,7 +19,8 @@ namespace Banking.Tests.Services
         private readonly Mock<IPasswordHasher> _passwordHasher;
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGenerator;
         private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly Mock<IValidator<RegisterRequest>> _validator;
+        private readonly Mock<IValidator<RegisterRequest>> _registerValidator;
+        private readonly Mock<IValidator<LoginRequest>> _loginValidator;
 
 
         public AuthServiceTests()
@@ -27,12 +30,21 @@ namespace Banking.Tests.Services
             _passwordHasher = new();
             _jwtTokenGenerator = new();
             _unitOfWork = new();
-            _validator = new();
+
+            _registerValidator = new();
+            _loginValidator = new();
         }
 
         [Fact]
         public async Task LoginAsync_Should_Return_Token_When_Credentials_Are_Valid()
         {
+
+            _loginValidator
+                .Setup(x => x.ValidateAsync(
+                    It.IsAny<LoginRequest>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult());
+
             var user = new User(
                 "juan",
                 "hashed-password",
@@ -53,7 +65,11 @@ namespace Banking.Tests.Services
 
             _jwtTokenGenerator
                 .Setup(x => x.GenerateToken(user))
-                .Returns("jwt-token");
+                .Returns(new JwtTokenResult
+                {
+                    Token = "jwt-token",
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(60)
+                });
 
 
             var service = new AuthService(
@@ -62,8 +78,8 @@ namespace Banking.Tests.Services
                 _passwordHasher.Object,
                 _unitOfWork.Object,
                 _jwtTokenGenerator.Object,
-                _validator.Object);
-
+                _registerValidator.Object,
+                _loginValidator.Object);
 
 
             var request = new LoginRequest
@@ -92,6 +108,12 @@ namespace Banking.Tests.Services
         [Fact]
         public async Task LoginAsync_Should_Throw_When_User_Does_Not_Exist()
         {
+            _loginValidator
+                .Setup(x => x.ValidateAsync(
+                    It.IsAny<LoginRequest>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult());
+
             _userRepository
                 .Setup(x => x.GetActiveUserByUsernameAsync("juan"))
                 .ReturnsAsync((User?)null);
@@ -103,7 +125,8 @@ namespace Banking.Tests.Services
                 _passwordHasher.Object,
                 _unitOfWork.Object,
                 _jwtTokenGenerator.Object,
-                _validator.Object);
+                _registerValidator.Object,
+                _loginValidator.Object);
 
 
             var request = new LoginRequest
@@ -130,7 +153,12 @@ namespace Banking.Tests.Services
         [Fact]
         public async Task LoginAsync_Should_Throw_When_Password_Is_Invalid()
         {
-            // Arrange
+            _loginValidator
+                .Setup(x => x.ValidateAsync(
+                    It.IsAny<LoginRequest>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult());
+
 
             var user = new User(
                 "juan",
@@ -156,7 +184,8 @@ namespace Banking.Tests.Services
                 _passwordHasher.Object,
                 _unitOfWork.Object,
                 _jwtTokenGenerator.Object,
-                _validator.Object);
+                _registerValidator.Object,
+                _loginValidator.Object);
 
 
             var request = new LoginRequest
