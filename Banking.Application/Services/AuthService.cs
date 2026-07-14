@@ -17,6 +17,7 @@ namespace Banking.Application.Services
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<RegisterRequest> _registerValidator;
+        private readonly IValidator<LoginRequest> _loginValidator;
 
         public AuthService(
             IUserRepository userRepository,
@@ -24,7 +25,8 @@ namespace Banking.Application.Services
             IPasswordHasher passwordHasher,
             IUnitOfWork unitOfWork,
             IJwtTokenGenerator jwtTokenGenerator,
-            IValidator<RegisterRequest> registerValidator)
+            IValidator<RegisterRequest> registerValidator,
+            IValidator<LoginRequest> loginValidator)
         {
             _userRepository = userRepository;
             _customerRepository = customerRepository;
@@ -32,6 +34,7 @@ namespace Banking.Application.Services
             _unitOfWork = unitOfWork;
             _jwtTokenGenerator = jwtTokenGenerator;
             _registerValidator = registerValidator;
+            _loginValidator = loginValidator;
         }
 
         private static UserResponse MapToResponse(User user)
@@ -104,6 +107,14 @@ namespace Banking.Application.Services
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
+            var validationResult = await _loginValidator.ValidateAsync(request);
+
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             var user = await _userRepository
                 .GetActiveUserByUsernameAsync(
                     request.UserName.ToLower()
@@ -123,12 +134,13 @@ namespace Banking.Application.Services
                 );
             }
 
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var tokenResult = _jwtTokenGenerator.GenerateToken(user);
+
 
             return new AuthResponse
             {
-                Token = token,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(60)
+                Token = tokenResult.Token,
+                ExpiresAt = tokenResult.ExpiresAt
             };
         }
 

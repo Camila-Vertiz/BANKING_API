@@ -1,7 +1,7 @@
 ﻿using Banking.Application.Request.Customer;
 using FluentValidation;
 
-namespace Banking.Application.Validators
+namespace Banking.Application.Validators.Customer
 {
 
     public class CreateCustomerRequestValidator : AbstractValidator<CreateCustomerRequest>

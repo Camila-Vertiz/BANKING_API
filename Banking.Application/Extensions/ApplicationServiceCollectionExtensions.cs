@@ -11,6 +11,10 @@ namespace Banking.Application.Extensions
         public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
+            services.AddValidatorsFromAssembly(
+                typeof(ApplicationServiceCollectionExtensions)
+                .Assembly);
+
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<IAuthService, AuthService>();

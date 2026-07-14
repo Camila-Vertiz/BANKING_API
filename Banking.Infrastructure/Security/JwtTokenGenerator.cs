@@ -1,5 +1,7 @@
-﻿using Banking.Application.Security.Interfaces;
+﻿using Banking.Application.Responses;
+using Banking.Application.Security.Interfaces;
 using Banking.Domain.Entities;
+using Banking.Infrastructure.Security;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,8 +21,12 @@ namespace Banking.Application.Security
             _settings = options.Value;
         }
 
-        public string GenerateToken(User user)
+        public JwtTokenResult GenerateToken(User user)
         {
+            var expiresAt = DateTime.UtcNow
+                .AddMinutes(_settings.ExpiresMinutes);
+
+
             var claims = new[]
             {
                 new Claim(
@@ -28,7 +34,7 @@ namespace Banking.Application.Security
                     user.Id.ToString()),
 
                 new Claim(
-                    JwtRegisteredClaimNames.UniqueName,
+                    JwtRegisteredClaimNames.Name,
                     user.UserName),
 
                 new Claim(
@@ -36,22 +42,31 @@ namespace Banking.Application.Security
                     user.Role.ToString())
             };
 
+
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_settings.Key));
+
 
             var credentials = new SigningCredentials(
                 key,
                 SecurityAlgorithms.HmacSha256);
 
+
             var token = new JwtSecurityToken(
                 issuer: _settings.Issuer,
                 audience: _settings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_settings.ExpiresMinutes),
+                expires: expiresAt,
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
 
+            return new JwtTokenResult
+            {
+                Token = new JwtSecurityTokenHandler()
+                    .WriteToken(token),
+
+                ExpiresAt = expiresAt
+            };
         }
     }
 }

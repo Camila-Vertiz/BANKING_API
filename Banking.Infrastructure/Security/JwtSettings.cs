@@ -1,4 +1,4 @@
-﻿namespace Banking.Application.Security
+﻿namespace Banking.Infrastructure.Security
 {
     public class JwtSettings
     {

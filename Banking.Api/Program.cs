@@ -1,9 +1,9 @@
 using Banking.Api.Middleware;
 using Banking.Application.Extensions;
-using Banking.Application.Security;
 using Banking.Application.Security.Interfaces;
 using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Extensions;
+using Banking.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;

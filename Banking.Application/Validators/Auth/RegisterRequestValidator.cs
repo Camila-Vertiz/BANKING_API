@@ -1,7 +1,7 @@
 ﻿using Banking.Application.Requests.Auth;
 using FluentValidation;
 
-namespace Banking.Application.Validators
+namespace Banking.Application.Validators.Auth
 {
     public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
     {

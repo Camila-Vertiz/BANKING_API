@@ -2,7 +2,6 @@
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Banking.Infrastructure.Repositories
 {

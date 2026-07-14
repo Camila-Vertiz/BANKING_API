@@ -1,7 +1,7 @@
 ﻿using Banking.Application.Requests.Transaction;
 using FluentValidation;
 
-namespace Banking.Application.Validators
+namespace Banking.Application.Validators.Transaction
 {
     public class TransferRequestValidator : AbstractValidator<TransferRequest>
     {
