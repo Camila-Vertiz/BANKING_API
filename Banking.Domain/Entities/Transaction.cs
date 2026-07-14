@@ -17,6 +17,8 @@ namespace Banking.Domain.Entities
         {
             if (amount <= 0)
                 throw new ArgumentException("Amount must be greater than zero.", nameof(amount));
+            if (accountId == Guid.Empty)
+                throw new ArgumentException("Account id is required.", nameof(accountId));
 
             Id = Guid.NewGuid();
             AccountId = accountId;

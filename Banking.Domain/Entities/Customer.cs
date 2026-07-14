@@ -3,7 +3,7 @@ namespace Banking.Domain.Entities
 {
     public class Customer
     {
-        private readonly List<BankAccount> _bankAccounts = new ();
+        private readonly List<BankAccount> _bankAccounts = new();
         public Guid Id { get; private set; }
         public Guid? UserId { get; private set; }
         public DocumentTypeEnum DocumentType { get; private set; }
@@ -47,6 +47,13 @@ namespace Banking.Domain.Entities
         }
         public void LinkUser(Guid userId)
         {
+            if (userId == Guid.Empty)
+                throw new ArgumentException("Use id is required");
+
+            if (UserId.HasValue)
+                throw new InvalidOperationException(
+                    "Customer already has a linked user.");
+
             UserId = userId;
         }
 
