@@ -1,4 +1,5 @@
-﻿using Banking.Application.Security.Interfaces;
+﻿using Banking.Application.Security;
+using Banking.Application.Security.Interfaces;
 using Banking.Domain.Interfaces;
 using Banking.Infrastructure.Data;
 using Banking.Infrastructure.Repositories;
@@ -33,6 +34,10 @@ namespace Banking.Infrastructure.Extensions
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             return services;
         }

@@ -1,5 +1,4 @@
-﻿using Banking.Application.Security;
-using Banking.Application.Security.Interfaces;
+﻿using Banking.Application.Security.Interfaces;
 using Banking.Application.Services;
 using Banking.Application.Services.Interfaces;
 using FluentValidation;
@@ -15,10 +14,6 @@ namespace Banking.Application.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<IAuthService, AuthService>();
-
-            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<IBankAccountService, BankAccountService>();
 
