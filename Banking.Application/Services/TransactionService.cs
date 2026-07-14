@@ -97,7 +97,7 @@ namespace Banking.Application.Services
             toAccount.Credit(request.Amount);
 
 
-            var correlationId = Guid.NewGuid();
+            var traceId = Guid.NewGuid();
 
 
             var debitTransaction = new Transaction(
@@ -106,7 +106,7 @@ namespace Banking.Application.Services
                 TransactionTypeEnum.Debit,
                 fromAccount.Currency,
                 request.Description,
-                correlationId);
+                traceId);
 
 
             var creditTransaction = new Transaction(
@@ -115,7 +115,7 @@ namespace Banking.Application.Services
                 TransactionTypeEnum.Credit,
                 toAccount.Currency,
                 request.Description,
-                correlationId);
+                traceId);
 
 
             fromAccount.AddTransaction(debitTransaction);

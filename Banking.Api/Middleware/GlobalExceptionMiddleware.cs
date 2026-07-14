@@ -105,7 +105,7 @@ namespace Banking.Api.Middleware
             HttpContext context,
             UnauthorizedAccessException exception)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Response.StatusCode = 401;
 
             context.Response.ContentType = "application/json";
 
